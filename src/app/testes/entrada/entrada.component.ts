@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Resposta } from '../../models/resposta.model';
 import { Entrada } from '../../models/entrada.model';
 import { EntradaService } from '../../services/api/entrada.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entrada',
@@ -13,7 +14,7 @@ import { EntradaService } from '../../services/api/entrada.service';
 export class EntradaComponent {
   resposta: Resposta<Entrada[]> | undefined;
 
-  constructor(private serviceEntrada: EntradaService) { }
+  constructor(private serviceEntrada: EntradaService, private route: Router) { }
   ngOnInit(): void {
     this.loadEntradas();
   }
@@ -28,5 +29,10 @@ export class EntradaComponent {
     } catch (err) {
       console.error('Erro na requisição:', err);
     }
+  }
+
+
+  goSaidas() {
+    this.route.navigateByUrl("saida");
   }
 }

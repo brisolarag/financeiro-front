@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Resposta } from '../../models/resposta.model';
 import { Saida } from '../../models/saida.model';
 import { SaidaService } from '../../services/api/saida.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-saida',
@@ -13,7 +14,7 @@ import { SaidaService } from '../../services/api/saida.service';
 export class SaidaComponent {
   resposta: Resposta<Saida[]> | undefined;
 
-  constructor(private serviceSaida: SaidaService) { }
+  constructor(private serviceSaida: SaidaService, private route:Router) { }
   ngOnInit(): void {
     this.loadSaidas();
   }
@@ -28,5 +29,10 @@ export class SaidaComponent {
     } catch (err) {
       console.error('Erro na requisição:', err);
     }
+  }
+
+
+  goEntradas() {
+    this.route.navigateByUrl("entrada");
   }
 }
