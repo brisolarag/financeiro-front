@@ -1,0 +1,14 @@
+<div style="height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow-y: hidden; padding: 30px; box-sizing: border-box; overflow-x: hidden; overflow-y: scroll;">
+  <h1 style="text-align: center;">TESTE: SAIDAS</h1>
+  @for (saida of saidas; track $index) 
+  {
+    <div style="border: 1px solid; width: 100%;margin-top: 30px;box-sizing: border-box;">
+      <p>id: {{saida.id}}</p>
+      <p>descricao: {{saida.descricao}}</p>
+      <p>valor: {{saida.valor}}</p>
+      <p>pago?: {{saida.pago}}</p>
+      <p>é fatura?: {{saida.isFatura}}</p>
+      <p>data: {{saida.data}}</p>
+    </div>
+  }
+</div>

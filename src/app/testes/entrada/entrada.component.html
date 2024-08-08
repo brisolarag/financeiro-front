@@ -1,0 +1,12 @@
+<div style="height: 100vh; width: 100vw; display: flex; flex-direction: column; overflow-y: hidden; padding: 30px; box-sizing: border-box; overflow-x: hidden; overflow-y: scroll;">
+  <h1 style="text-align: center;">TESTE: ENTRADAS</h1>
+  @for (entrada of entradas; track $index) 
+  {
+    <div style="border: 1px solid; width: 100%;margin-top: 30px;box-sizing: border-box;">
+      <p>id: {{entrada.id}}</p>
+      <p>de quem?: {{entrada.deQuem}}</p>
+      <p>valor: {{entrada.valor}}</p>
+      <p>data: {{entrada.data}}</p>
+    </div>
+  }
+</div>
