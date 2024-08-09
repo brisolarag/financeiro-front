@@ -14,8 +14,9 @@ export class SaidaService {
 
   constructor(private http: HttpClient) { }
 
-  async getSaidas(id?: string, de_quem?: string): Promise<Resposta<Saida[]>> {
-    const url = this.urlBusca(id, de_quem);
+  async getSaidas(id?: string, descricao?: string, is_fatura?:boolean, pago?: boolean): Promise<Resposta<Saida[]>> {
+    const url = this.urlBusca(id, descricao, is_fatura, pago);
+    console.log(url);
     return await firstValueFrom(this.http.get<Resposta<Saida[]>>(url))
       .then(response => response)
       .catch(error => {
@@ -37,10 +38,10 @@ export class SaidaService {
     if (descricao) {
       params.push(this.params_descricao(descricao));
     }
-    if (is_fatura) {
+    if (is_fatura != null) {
       params.push(this.params_isFatura(is_fatura));
     }
-    if (pago) {
+    if (pago != null) {
       params.push(this.params_pago(pago));
     }
     return params.length ? `${this.default_url}?${params.join('&')}` : this.default_url;
