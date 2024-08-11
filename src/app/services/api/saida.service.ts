@@ -16,7 +16,6 @@ export class SaidaService {
 
   async getSaidas(id?: string, descricao?: string, is_fatura?:boolean, pago?: boolean): Promise<Resposta<Saida[]>> {
     const url = this.urlBusca(id, descricao, is_fatura, pago);
-    console.log(url);
     return await firstValueFrom(this.http.get<Resposta<Saida[]>>(url))
       .then(response => response)
       .catch(error => {

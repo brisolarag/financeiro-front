@@ -14,8 +14,8 @@ export class EntradaService {
 
   constructor(private http: HttpClient) { }
 
-  async getEntradas(id?: string, de_quem?: string): Promise<Resposta<Entrada[]>> {
-    const url = this.urlBusca(id, de_quem);
+  async getEntradas(id?: string, descricao?: string, deQuem?:string): Promise<Resposta<Entrada[]>> {
+    const url = this.urlBusca(id, descricao, deQuem);
     return await firstValueFrom(this.http.get<Resposta<Entrada[]>>(url))
       .then(response => response)
       .catch(error => {
@@ -25,15 +25,19 @@ export class EntradaService {
   }
 
   private params_id = (guidId: string): string => `id=${guidId}`;
-  private params_deQuem = (de_quem: string): string => `deQuem=${de_quem}`;
+  private params_descricao = (descricao: string): string => `descricao=${descricao}`; 
+  private params_deQuem = (deQuem: string): string => `deQuem=${deQuem}`; 
 
-  private urlBusca(id?: string, de_quem?: string): string {
+  private urlBusca(id?: string, descricao?: string, deQuem?:string): string {
     let params: string[] = [];
     if (id) {
       params.push(this.params_id(id));
     }
-    if (de_quem) {
-      params.push(this.params_deQuem(de_quem));
+    if (descricao) {
+      params.push(this.params_descricao(descricao));
+    }
+    if (deQuem) {
+      params.push(this.params_deQuem(deQuem));
     }
     return params.length ? `${this.default_url}?${params.join('&')}` : this.default_url;
   }
