@@ -1,0 +1,59 @@
+<div style="height: 100vh; width: 100vw; display: flex; flex-direction: column; box-sizing: border-box;">
+  <button style="width: 100%; height: 30px; background-color: black; color: white; font-weight: bolder;" (click)="goEntradas()">IR PARA <span style="color: green;">ENTRADAS</span></button>
+
+
+  <!-- FILTROS -->
+  <div style="width: 100%; height: 60px; background-color: #F5F7F8; display: flex; padding: 5px 30px; align-items: center; justify-content: center;">  
+    
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Descrição" aria-label="Pesquisar pela descrição" id="filtro-descricao-saidas" [(ngModel)]="filtros.descricao">
+      <select class="form-select" id="filtro-faturas-saidas" aria-label="Filtrar faturas" [(ngModel)]="filtros.faturas">
+        <option value="0" selected>Faturas: Não filtrar</option>
+        <option value="1">Faturas: Sim</option>
+        <option value="2">Faturas: Não</option>
+      </select>
+      <select class="form-select" id="filtro-pago-saidas" aria-label="Filtrar pagos" [(ngModel)]="filtros.pago">
+        <option value="0" selected>Pago: Não filtrar</option>
+        <option value="1">Pago: Sim</option>
+        <option value="2">Pago: Não</option>
+      </select>
+      <button class="btn btn-outline-secondary" (click)="aplicarFiltros()" type="button">Button</button>
+    </div>
+      
+
+  </div>
+  
+  <h1 style="text-align: center; margin: 0;">TESTE: SAIDAS</h1>
+
+  <div style="width: 100%; flex: 1; display: flex; overflow-y: auto;">
+    <table class="table table-sm table-hover table-responsive-sm">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">ref</th>
+          <th scope="col">descricao</th>
+          <th scope="col">data</th>
+          <th scope="col">pagamento</th>
+          <th scope="col">valor</th>
+          <th scope="col">é fatura?</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider text-center">
+        @for (saida of saidas; track $index) {
+          <tr [className]="saida.pagamento != null ? 'table-success' : 'table-danger'">
+            <!-- <th scope="row">{{saida.id}}</th> -->
+  
+            <th scope="row">{{(saida.data | date: 'MMM/yy')?.toLowerCase()}}</th>
+            <td>{{saida.descricao}}</td>
+            <td>{{saida.data | date: 'dd/MM/yyyy'}}</td>
+  
+            @if (saida.pagamento == null) {<td>Não pago</td>} @else {<td>{{saida.pagamento | date: 'dd/MM/yyyy'}}</td>}
+  
+            <td>R$ {{saida.valor}}</td>
+            <td>{{saida.isFatura}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>

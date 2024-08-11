@@ -1,0 +1,6 @@
+$row-h: 33px;
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
+table {
+  margin: 0;
+}
+
