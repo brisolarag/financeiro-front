@@ -1,9 +1,13 @@
 import { Routes } from '@angular/router';
-import { EntradaComponent } from './testes/entrada/entrada.component';
-import { SaidaComponent } from './testes/saida/saida.component';
+import { EntradaTesteComponent } from './testes/entrada/entrada.component';
+import { SaidaTesteComponent } from './testes/saida/saida.component';
+import { SaidasComponent } from './pages/saidas/saidas.component';
 
 export const routes: Routes = 
 [
-  {path: 'entrada', component: EntradaComponent},
-  {path: 'saida', component: SaidaComponent}
+  {path: 'saidas', component: SaidasComponent},
+
+
+  {path: 'entrada_teste', component: EntradaTesteComponent},
+  {path: 'saida_teste', component: SaidaTesteComponent}
 ];

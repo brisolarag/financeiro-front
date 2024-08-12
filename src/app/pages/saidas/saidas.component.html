@@ -1,0 +1,89 @@
+<div id="faturas-view">
+  <div class="input-group mb-3">
+    <button class="btn btn-outline-secondary" type="button" (click)="goHome()">INICIO</button>
+    <span class="input-group-text" id="label-faturas-header">SAIDAS</span>
+  </div>
+
+  <div class="input-group mb-3">
+    <select class="form-select" id="filtro-ano-faturas" [(ngModel)]="filtro.ano" style="font-weight: bolder;">
+      <option>Ano: Não filtrar...</option>
+      @for (ano of anos; track $index) { <option value="{{ano}}">Ano: {{ano}}</option> }
+    </select>
+    <select class="form-select" id="filtro-mes-faturas" [(ngModel)]="filtro.mes" style="font-weight: bolder;">
+      <option>Mês: Não filtrar...</option>
+      @for (mes of meses; track $index) { <option value="{{$index}}">Mês: {{mes}}</option>}
+    </select>
+    <button class="btn btn-outline-secondary" type="button" (click)="aplicarFiltros()">Filtrar</button>
+  </div>
+
+
+  <section id="faturas-blocks" class="mb-3 bg-light">
+
+    <button class="btn btn-light btn-months btn-prev" (click)="prevMonth()">Mês: anterior</button>
+
+    <div class="table-resumo-saidas">
+      <table class="table table-sm table-light">
+        <tbody>
+          <tr>
+            <td>Faturas</td>
+            <td class="table-value">R$ {{getAlgo('fatura')}}</td>
+          </tr>
+          <tr>
+            <td>Empréstimos</td>
+            <td class="table-value">R$ {{getAlgo('empréstimo')}}</td>
+          </tr>
+          <tr>
+            <td>Outros</td>
+            <td class="table-value">R$ {{getAlgoMinus('empréstimo', 'fatura')}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-light btn-months btn-next" (click)="nextMonth()">Mês: próximo</button>
+
+  </section>
+
+  <section style="height: 50px; width: 100%;" class="mb-3">
+    <app-saida-add [data]="dataDoFiltro"></app-saida-add>
+  </section>
+
+
+  <section id="faturas-table">
+    <table class="table table-sm table-hover table-responsive-sm table-striped">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">ref</th>
+          <th scope="col">descricao</th>
+          <th scope="col">venc</th>
+          <th scope="col">pagamento</th>
+          <th scope="col">valor</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider text-center">
+        @for (saida of saidas; track $index) {
+
+        <tr #saidaRow [className]="saida.pagamento != null ? 'row-pago' : 'row-nao-pago'"
+          style="cursor: pointer;position: relative;">
+
+          <th scope="row" style="color: black;font-weight: normal;">
+            {{ saida.descricao.toLowerCase().includes('nubank')
+            ? (adjustNubankData(saida.data) | date:'MMM/yy')?.toLowerCase()
+            : (saida.data | date:'MMM/yy')?.toLowerCase() }}
+          </th>
+          <td>{{saida.descricao}}</td>
+          <td>{{saida.data | date: 'dd/MM/yyyy'}}</td>
+
+          @if (saida.pagamento == null) {<td>----</td>} @else {<td>{{saida.pagamento | date: 'dd/MM/yyyy'}}</td>}
+
+          <td>R$ {{saida.valor}}</td>
+          <td></td>
+          <td class="button-delete"><app-saida-edit [saida]="saida"></app-saida-edit></td>
+          <td class="button-delete" (click)="deletarSaida(saida.id, saidaRow)"><i class="bi bi-trash"></i></td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
+  </section>
+</div>

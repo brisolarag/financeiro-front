@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './saida.component.html',
   styleUrl: './saida.component.scss'
 })
-export class SaidaComponent {
+export class SaidaTesteComponent {
   resposta: Resposta<Saida[]> | undefined;
   // 0 = nao filtra
   // 1 = true
@@ -67,6 +67,6 @@ export class SaidaComponent {
 
 
   goEntradas() {
-    this.route.navigateByUrl("entrada");
+    this.route.navigateByUrl("entrada_teste");
   }
 }

@@ -1,0 +1,18 @@
+<form>
+  <div>
+    <div class="input-group">
+      <span class="input-group-text label-edit" style="width: 110px;">{{label}}</span>
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="dp"
+        [(ngModel)]="model"
+        (ngModelChange)="onDateSelect($event)"
+        ngbDatepicker
+        #d="ngbDatepicker"
+        style="border-radius: 0;"
+      />
+      <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+    </div>
+  </div>
+</form>

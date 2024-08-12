@@ -1,0 +1,41 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Criando nova <span style="color: red;">SAIDA</span></h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="input-group mb-3">
+        <span class="input-group-text label-edit">Valor</span>
+        <input type="text" class="form-control" aria-label="Valor da saida" placeholder="999.99" [(ngModel)]="form.valor" name="valorAdd">
+      </div>
+      <div class="mb-3">
+        <app-datepicker [label]="'Data'" [(model)]="form.venc"></app-datepicker>
+      </div>
+      <div class="mb-3">
+        <app-datepicker [label]="'Pagamento'" [(model)]="form.pagamento"></app-datepicker>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text label-edit">Fatura?</span>
+        <select class="form-select" id="select-fatura-sim-ou-nao" [(ngModel)]="form.isFatura" name="IsfaturaAdd">
+          <option value="false" selected>Fatura: Não</option>
+          <option value="true">Fatura: Sim</option>
+        </select>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text label-edit">Descrição</span>
+        <input type="text" class="form-control" aria-label="Descrição da saida" placeholder="Alguma compra..." [(ngModel)]="form.descricao" name="descAdd">
+      </div>
+    </form>
+  </div>
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="save()">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
+
+
+
+<button class="btn btn-danger h-100 w-100" (click)="open(content)">NOVA SAIDA</button>
