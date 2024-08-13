@@ -38,6 +38,10 @@ export class SaidasComponent {
 
   constructor(private service: SaidaService, private route: Router) { }
   ngOnInit(): void {
+    this.caregarSaidas();
+  }
+
+  caregarSaidas() {
     const ano = this.filtro.ano;
     let mes = this.filtro.mes;
     if (mes != undefined) {
@@ -51,9 +55,12 @@ export class SaidasComponent {
 
   
   get saidas() {
-    return this.resposta?.data.sort((b, a) => {
-      return new Date(b.data).getTime() - new Date(a.data).getTime();
-    });;
+    if (Array.isArray(this.resposta?.data)) {
+      return this.resposta.data.sort((b, a) => {
+        return new Date(b.data).getTime() - new Date(a.data).getTime();
+      });
+    }
+    return []; // Return an empty array if `data` is not an array
   }
 
   private async loadSaidas(id?: string, descricao?: string, is_fatura?: boolean, pago?: boolean, referencia?: string): Promise<void> {
@@ -68,8 +75,8 @@ export class SaidasComponent {
   
   async deletarSaida(id: string, row: HTMLElement) {
     try {
-      row.classList.add('hide');
       this.resposta = await this.service.delete(id);
+      this.caregarSaidas();
     } catch (err) {
       console.error('Erro na requisição:', err);
     }
@@ -82,13 +89,6 @@ export class SaidasComponent {
       console.error('Erro na requisicao',err);
     }
   }
-  
-
-
- 
-
-
-
 
   aplicarFiltros() {
     const ano = this.filtro.ano;
@@ -101,7 +101,6 @@ export class SaidasComponent {
     } else {
       this.loadSaidas();
     }
-    console.log(this.filtro);
   }
 
   prevMonth() {

@@ -43,9 +43,8 @@ export class SaidaService {
       valor: Number(valor),
       descricao: descricao,
       isFatura: Boolean(is_fatura),
-      pago: pagamento
+      pagamento: pagamento
     };
-    console.log(body)
 
     return await firstValueFrom(this.http.post<Resposta<Saida[]>>(url, body))
       .then(response => response)
