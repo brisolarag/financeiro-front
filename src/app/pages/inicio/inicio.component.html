@@ -1,7 +1,6 @@
 <div id="faturas-view">
   <div class="input-group mb-3">
-    <button class="btn btn-outline-secondary" type="button" (click)="goHome()">INICIO</button>
-    <span class="input-group-text" id="label-faturas-header">SAIDAS</span>
+    <span class="input-group-text" id="label-faturas-header">INICIO</span>
   </div>
 
   <div class="input-group mb-3">
@@ -10,8 +9,8 @@
       @for (ano of anos; track $index) { <option value="{{ano}}">Ano: {{ano}}</option> }
     </select>
     <select class="form-select" id="filtro-mes-faturas" [(ngModel)]="filtro.mes" style="font-weight: bolder;">
-      <option [ngValue]="undefined">Mês: Não filtrar...</option>
-      @for (mes of meses; track $index) { <option [ngValue]="$index">Mês: {{mes}}</option>}
+      <option>Mês: Não filtrar...</option>
+      @for (mes of meses; track $index) { <option value="{{$index}}">Mês: {{mes}}</option>}
     </select>
     <button class="btn btn-outline-secondary" type="button" (click)="aplicarFiltros()">Filtrar</button>
   </div>
@@ -26,19 +25,15 @@
         <tbody>
           <tr>
             <td>Faturas</td>
-            <td class="table-value">R$ {{getAlgo('fatura')}}</td>
+            <td class="table-value">R$ 123.33</td>
           </tr>
           <tr>
             <td>Empréstimos</td>
-            <td class="table-value">R$ {{getAlgo('empréstimo')}}</td>
+            <td class="table-value">R$ 123.33</td>
           </tr>
           <tr>
             <td>Outros</td>
-            <td class="table-value">R$ {{getAll() - getAlgo('empréstimo') - getAlgo('fatura')}}</td>
-          </tr>
-          <tr style="font-weight: bolder;">
-            <td>Total</td>
-            <td style="color: red;" class="table-value">R$ {{getAll()}}</td>
+            <td class="table-value">R$ 123.33</td>
           </tr>
         </tbody>
       </table>
@@ -48,8 +43,9 @@
 
   </section>
 
-  <section style="height: 50px; width: 100%;" class="mb-3">
-    <app-saida-add [data]="dataDoFiltro"></app-saida-add>
+  <section style="height: 50px; width: 100%; display: grid; gap: 10px; grid-template-columns: 1fr 1fr;" class="mb-3">
+    <button class="btn btn-success w-100 h-100">ENTRADAS</button>
+    <button class="btn btn-danger w-100 h-100" (click)="goSaidas()">SAIDAS</button>
   </section>
 
 

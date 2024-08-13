@@ -17,18 +17,21 @@ export class SaidaAddComponent {
   today: NgbDateStruct = this.getToday();
 
   form = {
-    venc: this.today, // Inicializa com a data de hoje
+    venc: this.today,
     pagamento: undefined as NgbDateStruct | undefined,
-    valor: undefined as string | undefined,
-    descricao: undefined as string | undefined,
-    isFatura: false
+    valor: 0,
+    descricao: '',
+    isFatura: false,
+    enviado: false
   };
+
   constructor(private modalService: NgbModal, private saidaService: SaidaService) {}
+
   private getToday(): NgbDateStruct {
     const now = new Date();
     return {
       year: now.getFullYear(),
-      month: now.getMonth() + 1, // Months are 0-based in JavaScript Date
+      month: now.getMonth() + 1, 
       day: now.getDate()
     };
   }
@@ -38,25 +41,41 @@ export class SaidaAddComponent {
   }
 
   async save() {
-    await this.criarNovaSaida(this.form.venc, this.form.valor, this.form.descricao!, this.form.isFatura, this.form.pagamento);
-  }
-
-  async criarNovaSaida(venc: NgbDateStruct | undefined, valor: string | undefined, descricao: string, isFatura: boolean, pgto?: NgbDateStruct) {
-    if (venc === undefined || valor === undefined || !descricao) {
-      throw new Error("Campos obrigatórios não preenchidos.");
+    const venc = this.ngbToString(this.form.venc);
+    const pagamento = this.ngbToString(this.form.pagamento);
+    try {
+      await this.criarSaida(venc!, this.form.valor, this.form.descricao, this.form.isFatura, pagamento)
+      this.form.enviado = true;
+      setTimeout(() => {
+        this.form.enviado = false;
+      }, 5000);
+    } catch (ex) {
+      this.form.enviado = false;
+      console.log("Erro ao enviar:", ex)
     }
-
-    const vencimento = this.convertToDate2(venc);
-    const pagamento = this.convertToDate(pgto);
-
-    const resposta = await this.saidaService.novaSaida(vencimento, valor, descricao, isFatura, pagamento);
   }
 
-  private convertToDate(dateStruct?: NgbDateStruct): Date | undefined {
-    return dateStruct ? new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day) : undefined;
+  async criarSaida(venc: string, valor: number, descricao: string, is_fatura: boolean, pagamento: string | undefined) {
+    try {
+      const novaSaida = this.saidaService.novaSaida(venc,valor,descricao,is_fatura,pagamento);
+    } catch (err) {
+      console.error('Erro na requisicao',err);
+    }
   }
-  private convertToDate2(dateStruct: NgbDateStruct): Date {
-    return new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day);
+
+
+  ngbDateStructToDate(ngbDate: NgbDateStruct): Date {
+    return new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+  }
+
+  private ngbToString(ngb?: NgbDateStruct): string | undefined {
+    if (ngb != undefined) {
+      const dia = ngb.day.toString().padStart(2, '0');
+      const mes = ngb.month.toString().padStart(2, '0');
+      const ano = ngb.year;
+      return `${ano}-${mes}-${dia}`;
+    }
+    return undefined
   }
 
 }

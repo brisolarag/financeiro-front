@@ -27,6 +27,9 @@
         <input type="text" class="form-control" aria-label="Descrição da saida" placeholder="Alguma compra..." [(ngModel)]="form.descricao" name="descAdd">
       </div>
     </form>
+    <div style="height: 30px;width: 100%; display: flex; align-items: center; justify-content: center;">
+      <p style="color: green;text-align: center;margin: 0;" [style.display]="!form.enviado ? 'none':'block'">Saida criada com sucesso!</p>
+    </div>
   </div>
 
 

@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import  { Entrada } from '../../models/entrada.model';
-import  { Resposta } from '../../models/resposta.model';
+import { Resposta } from '../../models/resposta.model';
 import type { Saida } from '../../models/saida.model';
 
 @Injectable({
@@ -14,17 +13,9 @@ export class SaidaService {
 
   constructor(private http: HttpClient) { }
 
-  async getSaidas(id?: string, descricao?: string, is_fatura?:boolean, pago?: boolean): Promise<Resposta<Saida[]>> {
-    const url = this.urlBusca(id, descricao, is_fatura, pago);
-    return await firstValueFrom(this.http.get<Resposta<Saida[]>>(url))
-      .then(response => response)
-      .catch(error => {
-        console.error('Erro ao buscar saidas:', error);
-        throw error;
-      });
-  }
-  async getFaturas(referencia?: Date): Promise<Resposta<Saida[]>> {
-    const url = this.urlBuscaFatura(referencia);
+  // http get:
+  async getSaidas(id?: string, descricao?: string, is_fatura?: boolean, pago?: boolean, referencia?: string): Promise<Resposta<Saida[]>> {
+    const url = this.urlBusca(id, descricao, is_fatura, pago, referencia);
     return await firstValueFrom(this.http.get<Resposta<Saida[]>>(url))
       .then(response => response)
       .catch(error => {
@@ -33,6 +24,7 @@ export class SaidaService {
       });
   }
 
+  // http delete:
   async delete(id: string): Promise<Resposta<Saida[]>> {
     const url = this.urlDelete(id);
     return await firstValueFrom(this.http.delete<Resposta<Saida[]>>(url))
@@ -43,13 +35,33 @@ export class SaidaService {
       });
   }
 
+  // http post:
+  async novaSaida(venc: string, valor: number, descricao: string, is_fatura: boolean, pagamento: string | undefined): Promise<Resposta<Saida[]>> {
+    const url = this.default_url;
+    const body = {
+      data: venc,
+      valor: Number(valor),
+      descricao: descricao,
+      isFatura: Boolean(is_fatura),
+      pago: pagamento
+    };
+    console.log(body)
 
-  private params_id = (guidId: string): string => `id=${guidId}`;
-  private params_descricao = (de_quem: string): string => `descricao=${de_quem}`;
-  private params_isFatura = (is_fatura: boolean): string => is_fatura ? `is_fatura=true` : `is_fatura=false`;
-  private params_pago = (pago: boolean): string => pago ? `pago=true` : `pago=false`;
+    return await firstValueFrom(this.http.post<Resposta<Saida[]>>(url, body))
+      .then(response => response)
+      .catch(error => {
+        console.error('Erro ao criar nova saída:', error);
+        throw error;
+      });
+  }
 
-  private urlBusca(id?: string, descricao?: string, is_fatura?: boolean, pago?: boolean): string {
+
+
+
+  // URLS:
+
+  // URL get
+  private urlBusca(id?: string, descricao?: string, is_fatura?: boolean, pago?: boolean, referencia?: string): string {
     let params: string[] = [];
     if (id) {
       params.push(this.params_id(id));
@@ -63,62 +75,23 @@ export class SaidaService {
     if (pago != null) {
       params.push(this.params_pago(pago));
     }
+    if (referencia) {
+      params.push(this.params_referencia(referencia))
+    }
     return params.length ? `${this.default_url}?${params.join('&')}` : this.default_url;
   }
 
-
-  private urlBuscaFatura(ref?: Date) {
-    let urlFatura = `${this.default_url}/Fatura`;
-    if (ref) {
-      const isoString = ref.toISOString();
-      const encodedDate = encodeURIComponent(isoString);
-      urlFatura = `${urlFatura}?referencia=${encodedDate}`;
-    }
-    return urlFatura;
-  }
-
+  // URL delete:
   private urlDelete(id: string) {
     return `${this.default_url}/${id}`;
   }
 
 
+  // parametros url:
+  private params_id = (guidId: string): string => `id=${guidId}`;
+  private params_descricao = (de_quem: string): string => `descricao=${de_quem}`;
+  private params_isFatura = (is_fatura: boolean): string => is_fatura ? `is_fatura=true` : `is_fatura=false`;
+  private params_pago = (pago: boolean): string => pago ? `pago=true` : `pago=false`;
+  private params_referencia = (referencia: string): string => `referencia=${referencia}`;
 
-  // posts:
-
-  async novaSaida(venc: Date, valor: string, descricao: string, is_fatura: boolean, pgto?: Date): Promise<Resposta<Saida[]>> {
-    const url = "http://localhost:5016/Saida";
-    const body = {
-      data: this.parseDate2(venc),
-      pagamento: this.parseDate2(pgto),
-      valor: parseFloat(valor),
-      descricao: descricao,
-      isFatura: is_fatura
-    };
-    
-
-    console.log(`url: ${url}`)
-    console.log(body)
-  
-    return await firstValueFrom(this.http.post<Resposta<Saida[]>>(url, body))
-      .then(response => response)
-      .catch(error => {
-        console.error('Erro ao criar nova saída:', error);
-        throw error;
-      });
-  }
-
-  parseDate(ref?: Date) {
-    if (ref) {
-      const isoString = ref.toISOString();
-      return encodeURIComponent(isoString);
-    }
-    return undefined
-  }
-  parseDate2(ref?: Date) {
-    if (ref) {
-      const isoString = ref.toISOString();
-      return isoString;
-    }
-    return undefined
-  }
 }

@@ -1,23 +1,21 @@
-import { Component, type TemplateRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Resposta } from '../../models/resposta.model';
 import { Saida } from '../../models/saida.model';
-import { Router } from '@angular/router';
 import { SaidaService } from '../../services/api/saida.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { SaidaAddComponent } from '../../components/modals/saida-add/saida-add.component';
 import { SaidaEditComponent } from '../../components/modals/saida-edit/saida-edit.component';
-import { SaidaAddComponent } from "../../components/modals/saida-add/saida-add.component";
-import type { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-saidas',
+  selector: 'app-inicio',
   standalone: true,
   imports: [FormsModule, CommonModule, SaidaEditComponent, SaidaAddComponent],
-  templateUrl: './saidas.component.html',
-  styleUrl: './saidas.component.scss'
+  templateUrl: './inicio.component.html',
+  styleUrl: './inicio.component.scss'
 })
-export class SaidasComponent {
-  // resposta api
+export class InicioComponent {
   resposta: Resposta<Saida[]> | undefined;
   
   // filtros
@@ -38,15 +36,7 @@ export class SaidasComponent {
 
   constructor(private service: SaidaService, private route: Router) { }
   ngOnInit(): void {
-    const ano = this.filtro.ano;
-    let mes = this.filtro.mes;
-    if (mes != undefined) {
-      mes = mes + 1;
-      const mesString = mes.toString().padStart(2, '0');
-      this.loadSaidas(undefined, undefined, undefined, undefined, `${ano}-${mesString}-01`);
-    } else {
-      this.loadSaidas();
-    }
+    this.loadSaidas();
   }
 
   
@@ -92,12 +82,9 @@ export class SaidasComponent {
 
   aplicarFiltros() {
     const ano = this.filtro.ano;
-    let mes = this.filtro.mes;
-
-    if (ano != undefined && mes != undefined) {
-      mes = mes + 1;
-      const mesString = mes.toString().padStart(2, '0');
-      this.loadSaidas(undefined, undefined, undefined, undefined, `${ano}-${mesString}-01`);
+    const mes = this.filtro.mes;
+    if (ano && mes) {
+      this.loadSaidas()
     } else {
       this.loadSaidas();
     }
@@ -123,30 +110,18 @@ export class SaidasComponent {
     }
     this.aplicarFiltros();
   }
-  
-  
-   getAlgo(algo: string): number {
-    return parseFloat((this.saidas?.filter(item => (item.descricao.toLowerCase().includes(algo)))
-      .reduce((total, item) => total + (item.valor || 0), 0) || 0).toFixed(2));
-  }
-  getAll(): number {
-    return parseFloat((this.saidas?.reduce((total, item) => total + (item.valor || 0), 0) || 0).toFixed(2));
-  }
-  
-  
-  
-  
+
   adjustNubankData(data: string) {
-    const newDate = new Date(data); 
-    newDate.setMonth(newDate.getMonth() - 1);
+    const newDate = new Date(data); // Cria uma nova data baseada na data original
+    newDate.setMonth(newDate.getMonth() - 1); // Subtrai um mês
     return newDate;
   }
   isCheckboxChecked(checkbox: HTMLInputElement): boolean {
     return checkbox.checked;
   }
-  goHome() {
-    this.route.navigateByUrl('');
+
+
+  goSaidas() {
+    this.route.navigateByUrl('saidas')
   }
-
-
 }
