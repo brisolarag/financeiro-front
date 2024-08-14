@@ -10,7 +10,7 @@
           <input class="form-check-input mt-0" type="checkbox" aria-label="Check para editar" [(ngModel)]="saidaEdit.descricao" [ngModelOptions]="{standalone: true}">
         </div>
         <span class="input-group-text label-edit" id="label-edit-descricao">Descrição</span>
-        <input type="text" class="form-control" aria-label="Descrição da saida" value="{{saida?.descricao}}" [disabled]="!saidaEdit.descricao">
+        <input type="text" class="form-control" aria-label="Descrição da saida" value="{{saida?.descricao}}" [disabled]="!saidaEdit.descricao" #desc>
       </div>
 
       <div class="input-group mb-3">
@@ -18,7 +18,7 @@
           <input class="form-check-input mt-0" type="checkbox" aria-label="Check para editar" [(ngModel)]="saidaEdit.valor" [ngModelOptions]="{standalone: true}">
         </div>
         <span class="input-group-text label-edit" id="label-edit-vencimento">Valor</span>
-        <input type="text" class="form-control" aria-label="Valor da saida" value="{{saida?.valor}}" [disabled]="!saidaEdit.valor">
+        <input type="text" class="form-control" aria-label="Valor da saida" value="{{saida?.valor}}" [disabled]="!saidaEdit.valor" #valor>
       </div>
 
       <div class="input-group mb-3">
@@ -27,7 +27,7 @@
         </div>
         <span class="input-group-text label-edit" id="label-edit-pagamento">Vencimento</span>
         <input type="text" class="form-control" aria-label="Vencimento da saida"
-          [value]="saida?.data | date: 'dd/MM/yyyy'" [disabled]="!saidaEdit.vencimento">
+          [value]="saida?.data | date: 'dd/MM/yyyy'" [disabled]="!saidaEdit.vencimento" #venc>
       </div>
 
       <div class="input-group mb-3">
@@ -36,13 +36,13 @@
         </div>
         <span class="input-group-text label-edit" id="label-edit-pagamento">Pagamento</span>
         <input type="text" class="form-control" aria-label="Pagamento da saida"
-          [value]="saida?.pagamento | date: 'dd/MM/yyyy'" [disabled]="!saidaEdit.pagamento">
+          [value]="saida?.pagamento | date: 'dd/MM/yyyy'" [disabled]="!saidaEdit.pagamento" #pgto>
       </div>
     </form>
     <p style="font-size: smaller; text-align: center;color: rgba(0, 0, 0, 0.575);">check para editar</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" (click)="save()">Save</button>
+    <button type="button" class="btn btn-success" (click)="save(venc,valor,desc,pgto)">Save</button>
     <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
   </div>
 </ng-template>

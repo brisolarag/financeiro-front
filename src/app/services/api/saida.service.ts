@@ -54,6 +54,40 @@ export class SaidaService {
       });
   }
 
+  // http put:
+  async editarSaidas(
+          id:string, 
+          venc: string | undefined, 
+          valor: number | undefined, 
+          descricao: string | undefined, 
+          pagamento: string | undefined)
+          : Promise<Resposta<Saida[]>> {
+    const url = `${this.default_url}/${id}`;
+    const body:any = {};
+    if (venc !== undefined) {
+      body.data = venc;
+    }
+    if (valor !== undefined) {
+      body.valor = Number(valor);
+    }
+    if (descricao !== undefined) {
+      body.descricao = descricao;
+    }
+
+    if (pagamento !== undefined) {
+      body.pagamento = pagamento;
+    }
+
+    console.log(body)
+
+    return await firstValueFrom(this.http.put<Resposta<Saida[]>>(url, body))
+      .then(response => response)
+      .catch(error => {
+        console.error('Erro ao criar nova saída:', error);
+        throw error;
+      });
+  }
+
 
 
 
