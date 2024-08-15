@@ -1,0 +1,42 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{entrada?.deQuem ?? 'Descrição não disponível'}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="input-group mb-3">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" aria-label="Check para editar" [(ngModel)]="entradaEdit.descricao" [ngModelOptions]="{standalone: true}">
+        </div>
+        <span class="input-group-text label-edit" id="label-edit-descricao">Descrição</span>
+        <input type="text" class="form-control" aria-label="Descrição da entrada" value="{{entrada?.deQuem}}" [disabled]="!entradaEdit.descricao" #desc>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" aria-label="Check para editar" [(ngModel)]="entradaEdit.valor" [ngModelOptions]="{standalone: true}">
+        </div>
+        <span class="input-group-text label-edit" id="label-edit-vencimento">Valor</span>
+        <input type="text" class="form-control" aria-label="Valor da entrada" value="{{entrada?.valor}}" [disabled]="!entradaEdit.valor" #valor>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" aria-label="Check para editar" [(ngModel)]="entradaEdit.data" [ngModelOptions]="{standalone: true}">
+        </div>
+        <span class="input-group-text label-edit" id="label-edit-pagamento">Data</span>
+        <input type="text" class="form-control" aria-label="Data da entrada"
+          [value]="entrada?.data | date: 'dd/MM/yyyy'" [disabled]="!entradaEdit.data" #data>
+      </div>
+    </form>
+    <p style="font-size: smaller; text-align: center;color: rgba(0, 0, 0, 0.575);">check para editar</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="save(data,valor,desc)">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
+
+
+<i class="bi bi-pencil-square" (click)="open(content)"></i>

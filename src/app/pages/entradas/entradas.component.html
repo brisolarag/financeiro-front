@@ -1,0 +1,95 @@
+<div id="faturas-view">
+  <div class="input-group mb-3">
+    <button class="btn btn-outline-secondary" type="button" (click)="goHome()">INICIO</button>
+    <span class="input-group-text" id="label-faturas-header">ENTRADAS</span>
+  </div>
+
+  <div class="input-group mb-3">
+    <select class="form-select" id="filtro-ano-faturas" [(ngModel)]="filtro.ano" style="font-weight: bolder;">
+      <option>Ano: Não filtrar...</option>
+      @for (ano of anos; track $index) { <option value="{{ano}}">Ano: {{ano}}</option> }
+    </select>
+    <select class="form-select" id="filtro-mes-faturas" [(ngModel)]="filtro.mes" style="font-weight: bolder;">
+      <option [ngValue]="undefined">Mês: Não filtrar...</option>
+      @for (mes of meses; track $index) { <option [ngValue]="$index">Mês: {{mes}}</option>}
+    </select>
+    <button class="btn btn-outline-secondary" type="button" (click)="aplicarFiltros()">Filtrar</button>
+  </div>
+
+
+  <section id="faturas-blocks" class="mb-3 bg-light">
+
+    <button class="btn btn-light btn-months btn-prev" (click)="prevMonth()">Mês: anterior</button>
+
+    <div class="table-resumo-saidas">
+      <table class="table table-sm table-light">
+        <tbody>
+
+          <tr>
+            <td>DELL</td>
+            <td class="table-value">R$ {{getAlgo('dell')}}</td>
+          </tr>
+
+          <tr>
+            <td>PUCRS</td>
+            <td class="table-value">R$ {{getAlgo('pucrs')}}</td>
+          </tr>
+
+          <tr>
+            <td>Pensão</td>
+            <td class="table-value">R$ {{getAlgo('pensão')}}</td>
+          </tr>
+
+          <tr>
+            <td>Outros</td>
+            <td class="table-value">R$ {{getAll() - getAlgo('dell') - getAlgo('pucrs') - getAlgo('pensão')}}</td>
+          </tr>
+
+          <tr style="font-weight: bolder;">
+            <td>Total</td>
+            <td style="color: green;" class="table-value">R$ {{getAll()}}</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-light btn-months btn-next" (click)="nextMonth()">Mês: próximo</button>
+
+  </section>
+
+  <section style="height: 50px; width: 100%;" class="mb-3">
+    <app-entrada-add [data]="dataDoFiltro"></app-entrada-add>
+  </section>
+
+
+  <section id="faturas-table">
+    <table class="table table-sm table-hover table-responsive-sm">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">data</th>
+          <th scope="col">descricao</th>
+          <th scope="col">valor</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider text-center">
+        @for (entrada of entradas; track $index) {
+
+        <tr class="table-sucess" style="cursor: pointer;position: relative;">
+
+
+          <th scope="row" style="color: black;font-weight: normal;">{{entrada.data | date: 'dd/MM/yyyy'}}</th>
+          <td>{{entrada.deQuem}}</td>
+          <td>R$ {{entrada.valor}}</td>
+
+
+          <td></td>
+          <td class="button-edit" style="color: black;"><app-entrada-edit [entrada]="entrada"></app-entrada-edit></td>
+          <td class="button-delete" style="color: #FF0000;" (click)="deletarEntrada(entrada.id)"><i class="bi bi-trash"></i></td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
+  </section>
+</div>

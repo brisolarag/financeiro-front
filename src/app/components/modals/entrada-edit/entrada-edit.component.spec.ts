@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SaidaComponent } from './saida.component';
+import { EntradaEditComponent } from './entrada-edit.component';
 
-describe('SaidaComponent', () => {
-  let component: SaidaComponent;
-  let fixture: ComponentFixture<SaidaComponent>;
+describe('EntradaEditComponent', () => {
+  let component: EntradaEditComponent;
+  let fixture: ComponentFixture<EntradaEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SaidaComponent]
+      imports: [EntradaEditComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SaidaComponent);
+    fixture = TestBed.createComponent(EntradaEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
